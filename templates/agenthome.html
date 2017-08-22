@@ -22,7 +22,7 @@
 							<div class="col-md-4">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-tags" aria-hidden="true"></i></span>
-									<input  name="first_name" placeholder="Enter Code" class="form-control"  type="text">
+									<input  name="first_name" placeholder="Enter Code"  ng-model="user.pcode" class="form-control"  type="text">
 								</div>
 							</div>
 						</div>
@@ -31,7 +31,7 @@
 							<div class="col-md-4">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-star-o" aria-hidden="true"></i></span>
-									<input name="last_name" placeholder="Enter Name" class="form-control"  type="text">
+									<input name="pname" placeholder="Enter Name" class="form-control"  ng-model="user.pname" type="text">
 								</div>
 							</div>
 						</div>
@@ -40,7 +40,7 @@
 							<div class="col-md-4">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-									<textarea placeholder="Enter Product Description.." rows="3" class="form-control"></textarea>									
+									<textarea placeholder="Enter Product Description.." rows="3" class="form-control"  ng-model="user.pdesc"></textarea>									
 								</div>
 							</div>
 						</div>
@@ -49,7 +49,7 @@
 							<div class="col-md-4">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-shirtsinbulk" aria-hidden="true"></i></span>
-									<input name="email" placeholder="Enter Size" class="form-control"  type="text">
+									<input name="email" placeholder="Enter Size" class="form-control"  ng-model="user.psize" type="text">
 								</div>
 							</div>
 						</div>
@@ -58,7 +58,7 @@
 							<div class="col-md-4">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
-									<input name="email" placeholder="Enter Price" class="form-control"  type="text">
+									<input name="email" placeholder="Enter Price" class="form-control"  ng-model="user.pprice" type="text">
 								</div>
 							</div>
 						</div>
@@ -75,7 +75,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label"></label>  
 							<div class="col-md-4">
-								<button class="btn btn-primary">Add Product</button>
+								<button class="btn btn-primary" ng-click="register()">Add Product</button>
 								<button class="btn">Reset</button>
 							</div>
 						</div>
