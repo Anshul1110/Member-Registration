@@ -28,57 +28,95 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('home');
 	}
 	$scope.user = {
-		field1:''
+		fname:'',
+		lname:'',
+		uname:'',
+		pass:'',
+		cpass:'',
+		email:'',
+		numb:'',
+		r: $stateParams.role
 	}
 	$scope.register = function(){
 		console.log($scope.user)
 	}
 })
 .controller('AgentHomeCtrl', function($scope, $state, $stateParams){
-	$scope.user = {
-		field1:''
+	/*$scope.product = {
+		pcode:'',
+		pname:'',
+		pdesc:'',
+		psize:'',
+		pprice:'',
+		r: $stateParams.role
 	}
 	$scope.register = function(){
 		console.log($scope.user)
-	}
+	}*/
 })
 .controller('CustRegCtrl', function($scope, $state, $stateParams){
 	if($stateParams.role==null){
 		$state.go('home');
 	}
 	$scope.user = {
-		field1:''
+		fname:'',
+		lname: '',
+		uname:'',
+		pass:'',
+		cpass:'',
+		email:'',
+		dep:'',
+		numb:'',
+		r: $stateParams.role
 	}
 	$scope.register = function(){
 		console.log($scope.user)
 	}
 })
 .controller('CustHomeCtrl', function($scope, $state, $stateParams){
-	$scope.user = {
-		field1:''
+	/*$scope.user = {
+		fields:''
+
 	}
 	$scope.register = function(){
 		console.log($scope.user)
-	}
+	}*/
 })
 .controller('MerchRegCtrl', function($scope, $state, $stateParams){
 	if($stateParams.role==null){
 		$state.go('home');
 	}
 	$scope.user = {
-		field1:''
+		fname:'',
+		lname: '',
+		uname:'',
+		pass:'',
+		cpass:'',
+		add: '',
+		city: '',
+		state: '',
+		zip: '',
+		comp: '',
+		numb: '',
+		email: '',
+		url: '',
+		r: $stateParams.role
 	}
+	/*and ye sab fields html form me bhi map karne hai 
+	hum log name ki ng-model le rahe h na?
+	ng-model use karke yaad hai na?...sabse pehle din padhaya th ..?login wala dekh le html..theek h boss m krta hu.. .*/
 	$scope.register = function(){
 		console.log($scope.user)
 	}
 })
 .controller('MerchHomeCtrl', function($scope, $state, $stateParams){
-	$scope.user = {
-		field1:''
+	/*$scope.user = {
+		field1:'',
+		
 	}
 	$scope.register = function(){
 		console.log($scope.user)
-	}
+	}*/
 })
 .controller('AdminHomeCtrl', function($scope, $state, $stateParams){
 	$scope.user = {
