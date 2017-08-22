@@ -1,0 +1,29 @@
+-- Shree Ganeshaya Namah --
+
+1 landing page with 3 buttons, one shows "OP", one shows "Merchant", one shows "Customer"
+
+OP button:
+1) OP Register, system auto give him 10 credit (10 is editable)
+2) After register, superadmin can add or reduce credit for them manually too
+3) Member register Product Code, description, Size, Price, Picture and few detail column, once submit, system reduce ONE credit from his account
+4) In his page can see how many product item is belong to him
+5) If the product item he key in already duplicate, mean others key in already, then system wont reduce his credit, just show in pending page
+6) If once product got double entry, Superadmin able to remove product from current registrant, and activate in second registrant account, once remove from current registrant, his credit will add back
+7) In OP page, they can active Merchant button and customer button too, so that they no need to register extra two time
+
+Merchant Button:
+1) Merchant register, key in company detail
+2) Can share link to his friend, once he friend register via link, system will put under his downline (refferal program)
+3) Can show genealogy report, view how many downline he has
+
+Customer Button:
+1) Customer register, key in detail, Email verification
+2) Can share link to his friend, once he friend register via link, system will put under his downline (refferal program)
+3) Can show genealogy report, view how many downline he has
+
+Angular  (front end )
+php/mysql backend -
+
+angular - easy. load kam hojayega
+
+1.	binding between js and html
