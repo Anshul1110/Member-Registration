@@ -2,46 +2,62 @@ var app = angular.module('app', ['ui.router']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
-$urlRouterProvider.otherwise("/home");
+    $urlRouterProvider.otherwise("/home");
 
-$stateProvider
+    $stateProvider
     .state('home', {
       url: "/home",
       templateUrl: "templates/home.html",
       controller: 'HomeCtrl'
-    })
-    .state('agentRegister', {
-      url: "/register/agent",
-      params: {role: 'Agent'},
-      controller: 'AgentRegCtrl',
-      templateUrl: "templates/opreg.html"
-    })
-    .state('customerRegister', {
-      url: "/register/customer",
-      params: {role: 'Customer'},
-      controller: 'CustRegCtrl',
-      templateUrl: "templates/customer.html"
-    })
-    .state('merchantRegister', {
-      url: "/register/merchant",
-      params: {role: 'Merchant'},
-      controller: 'MerchRegCtrl',
-      templateUrl: "templates/merchant.html"
     })
     .state('login', {
       url: "/login",
       params:{role:null},
       controller: 'LoginCtrl',
       templateUrl: "templates/login.html"
+    })
+    .state('agentHome', {
+      url: "/agent/home",
+      controller: 'AgentHomeCtrl',
+      templateUrl: "templates/agenthome.html"
+    })
+    .state('agentRegister', {
+      url: "/agent/register",
+      params: {role: 'Agent'},
+      controller: 'AgentRegCtrl',
+      templateUrl: "templates/opreg.html"
+    })
+    .state('customerHome', {
+      url: "/customer/home",
+      controller: 'CustHomeCtrl',
+      templateUrl: "templates/custhome.html"
+    })
+    .state('customerRegister', {
+      url: "/customer/register",
+      params: {role: 'Customer'},
+      controller: 'CustRegCtrl',
+      templateUrl: "templates/customer.html"
+    })
+    .state('merchantHome', {
+      url: "/merchant/home",
+      controller: 'MerchHomeCtrl',
+      templateUrl: "templates/merchhome.html"
+    })
+    .state('merchantRegister', {
+      url: "/merchant/register",
+      params: {role: 'Merchant'},
+      controller: 'MerchRegCtrl',
+      templateUrl: "templates/merchant.html"
+    })
+    .state('adminHome', {
+      url: "/admin/home",
+      controller: 'AdminHomeCtrl',
+      templateUrl: "templates/adminhome.html"
     });
 });
      
 app.directive('headerTpl', function () {
     return {
-        restrict: 'E',
-        templateUrl: 'templates/header.html',
-        controller: function() {},
-        link: function (scope, element, attrs, ctrl) {
-        }
+        templateUrl: 'templates/header.html'
     }
 });
