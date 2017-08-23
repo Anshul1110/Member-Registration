@@ -60,9 +60,8 @@ app.directive('headerTpl', function () {
     return {
         templateUrl: 'templates/header.html'
     }
-});
-
-app.directive('contenteditable', function() {
+})
+.directive('contenteditable', function() {
     return {
         require: 'ngModel',
         link: function(scope, elm, attrs, ctrl) {
@@ -82,4 +81,18 @@ app.directive('contenteditable', function() {
             ctrl.$setViewValue(elm.html());
         }
     };
+}).directive('fileModel', function ($parse) {
+    return {
+    restrict: 'A',
+    link: function(scope, element, attrs) {
+        var model = $parse(attrs.fileModel);
+        var modelSetter = model.assign;
+
+        element.bind('change', function(){
+            scope.$apply(function(){
+                modelSetter(scope, element[0].files);
+            });
+        });
+    }
+   };
 });

@@ -78,22 +78,22 @@
     }
 
     function agentRegister($user, $conn){
-        $m_id = 'A'.generateRand();
+        $a_id = 'A'.generateRand();
         $user['id'] = $m_id;
-        $m_fname = $user['fname'];
-        $m_lname = $user['lname'];
-        $m_uname = $user['uname'];
-        $m_pass = $user['pass'];
-        $m_cpass = $user['cpass'];
-        $m_add = $user['add'];
-        $m_city = $user['city'];
-        $m_state = $user['state'];
-        $m_zip = $user['zip'];
-        $m_comp = $user['comp'];
-        $m_numb = $user['numb'];
-        $m_email = $user['email'];
-        $m_url = $user['url'];
-        $m_credits = $user['credits'];
+        $a_fname = $user['fname'];
+        $a_lname = $user['lname'];
+        $a_uname = $user['uname'];
+        $a_pass = $user['pass'];
+        $a_cpass = $user['cpass'];
+        $a_add = $user['add'];
+        $a_city = $user['city'];
+        $a_state = $user['state'];
+        $a_zip = $user['zip'];
+        $a_comp = $user['comp'];
+        $a_numb = $user['numb'];
+        $a_email = $user['email'];
+        $a_url = $user['url'];
+        $a_credits = $user['credits'];
         $stmt = $conn->prepare("INSERT INTO agent ( 
                                     a_id, 
                                     a_fname, 
@@ -111,18 +111,18 @@
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
  
         $stmt->bind_param("ssssssssssss", 
-                            $m_id, 
-                            $m_fname, 
-                            $m_lname,
-                            $m_add,
-                            $m_city,
-                            $m_state,
-                            $m_zip,
-                            $m_comp,
-                            $m_numb,
-                            $m_email,
-                            $m_url,
-                            $m_credits
+                            $a_id, 
+                            $a_fname, 
+                            $a_lname,
+                            $a_add,
+                            $a_city,
+                            $a_state,
+                            $a_zip,
+                            $a_comp,
+                            $a_numb,
+                            $a_email,
+                            $a_url,
+                            $a_credits
                             );
 
         if($stmt->execute()){
