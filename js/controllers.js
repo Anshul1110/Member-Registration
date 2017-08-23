@@ -1,3 +1,13 @@
+function twoDigits(d) {
+    if(0 <= d && d < 10) return "0" + d.toString();
+    if(-10 < d && d < 0) return "-0" + (-1*d).toString();
+    return d.toString();
+}  
+
+Date.prototype.toMysqlFormat = function(h, m, s) {
+    return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + twoDigits(this.getUTCDate()) + " " + twoDigits((h || h===0)?h:this.getUTCHours()) + ":" + twoDigits((m || m===0)?m:this.getUTCMinutes()) + ":" + twoDigits((s || s===0)?s:this.getUTCSeconds());
+};
+
 app.controller('HomeCtrl', function($scope, $state){
 	$scope.doLogin = function(role){
 		$state.go('login', {role: role})
@@ -15,7 +25,7 @@ app.controller('HomeCtrl', function($scope, $state){
 	$scope.login = function(){
 		console.log($scope.user)
 		switch($scope.user.r){
-			case 'Agent' : $state.go('agentLogin'); break;
+			case 'Online Entrepreneur' : $state.go('agentLogin'); break;
 			case 'Admin' : $state.go('adminLogin'); break;
 			case 'Customer' : $state.go('customerLogin'); break;
 			case 'Merchant' : $state.go('merchantLogin'); break;	
@@ -23,7 +33,7 @@ app.controller('HomeCtrl', function($scope, $state){
 	}
 	$scope.register = function(){
 		switch($scope.user.r){
-			case 'Agent' : $state.go('agentRegister'); break;
+			case 'Online Entrepreneur' : $state.go('agentRegister'); break;
 			case 'Customer' : $state.go('customerRegister'); break;
 			case 'Merchant' : $state.go('merchantRegister'); break;	
 		}	
@@ -34,13 +44,20 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('home');
 	}
 	$scope.user = {
+		credits:10,
 		fname:'Test',
-		lname:'test',
-		uname:'test',
-		pass:'test',
-		cpass:'test',
-		email:'test',
-		numb:'test',
+		lname: 'Test',
+		uname:'Test',
+		pass:'Test',
+		cpass:'Test',
+		add: 'Test',
+		city: 'Test',
+		state: 'Test',
+		zip: 'Test',
+		comp: 'Test',
+		numb: 'Test',
+		email: 'Test',
+		url: 'Test',
 		r: $stateParams.role
 	}
 	$scope.register = function(){
@@ -71,17 +88,18 @@ app.controller('HomeCtrl', function($scope, $state){
 	}
 })
 .controller('AgentHomeCtrl', function($scope, $state, $stateParams){
-	/*$scope.product = {
-		pcode:'',
-		pname:'',
-		pdesc:'',
-		psize:'',
-		pprice:'',
-		r: $stateParams.role
+	$scope.product = {
+		pcode:'Test',
+		pname:'Test',
+		pdesc:'Test',
+		pcat:'Test',
+		pbrand:'Test',
+		psize:'Test',
+		pprice:'Test'
 	}
 	$scope.register = function(){
-		console.log($scope.user)
-	}*/
+		console.log($scope.product)
+	}
 })
 .controller('CustRegCtrl', function($scope, $state, $stateParams, $http){
 	if($stateParams.role==null){
@@ -94,11 +112,13 @@ app.controller('HomeCtrl', function($scope, $state){
 		pass:'Test',
 		cpass:'Test',
 		email:'Test',
-		dep:'Test',
+		nic:'102933843348',
+		dob: new Date(),
 		numb:'Test',
 		r: $stateParams.role
 	}
 	$scope.register = function(){
+		$scope.user.sqlDob = $scope.user.dob.toMysqlFormat(0,0,0);
 		console.log($scope.user)
 		$http({
             url: "backend/register.php",
@@ -155,9 +175,6 @@ app.controller('HomeCtrl', function($scope, $state){
 		url: 'Test',
 		r: $stateParams.role
 	}
-	/*and ye sab fields html form me bhi map karne hai 
-	hum log name ki ng-model le rahe h na?
-	ng-model use karke yaad hai na?...sabse pehle din padhaya th ..?login wala dekh le html..theek h boss m krta hu.. .*/
 	$scope.register = function(){
 		console.log($scope.user)
 		$http({

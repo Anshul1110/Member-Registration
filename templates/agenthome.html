@@ -1,7 +1,7 @@
 <div class="container-fluid">
 	<div class="row text-center">
 		<div class="col-md-12">
-			<h1>Welcome, Agent!</h1>
+			<h1>Welcome, Online Entrepreneur!</h1>
 			<h3>You have 10 Credits remaining!</h3>		
 			<hr style="width: 50%;" />
 		</div>
@@ -19,52 +19,85 @@
 					<form class="form-horizontal">
 						<div class="form-group">
 							<label class="col-md-4 control-label">Product Code</label>  
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-tags" aria-hidden="true"></i></span>
-									<input  name="first_name" placeholder="Enter Code"  ng-model="user.pcode" class="form-control"  type="text">
+									<input  name="first_name" placeholder="Enter Code"  ng-model="product.pcode" class="form-control"  type="text">
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Product Name</label> 
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-star-o" aria-hidden="true"></i></span>
-									<input name="pname" placeholder="Enter Name" class="form-control"  ng-model="user.pname" type="text">
+									<input name="pname" placeholder="Enter Name" class="form-control"  ng-model="product.pname" type="text">
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Description</label>  
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-									<textarea placeholder="Enter Product Description.." rows="3" class="form-control"  ng-model="user.pdesc"></textarea>									
+									<textarea placeholder="Enter Product Description.." rows="3" class="form-control"  ng-model="product.pdesc"></textarea>									
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Size</label>  
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-shirtsinbulk" aria-hidden="true"></i></span>
-									<input name="email" placeholder="Enter Size" class="form-control"  ng-model="user.psize" type="text">
+									<input name="email" placeholder="Enter Size" class="form-control"  ng-model="product.psize" type="text">
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Price</label>  
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
-									<input name="email" placeholder="Enter Price" class="form-control"  ng-model="user.pprice" type="text">
+									<input name="email" placeholder="Enter Price" class="form-control"  ng-model="product.pprice" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label">Category</label>  
+							<div class="col-md-6">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-shirtsinbulk" aria-hidden="true"></i></span>
+									<input name="email" placeholder="Enter Category" class="form-control"  ng-model="product.pcat" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label">Brand</label>  
+							<div class="col-md-6">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
+									<input name="email" placeholder="Enter Price" class="form-control"  ng-model="product.pbrand" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label">Product Details</label>  
+							<div class="col-md-6">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+									<div contenteditable="true" style="height:100px;" class="form-control text-left"  ng-model="product.pdet">
+										<ul style="margin-left: -8%;">
+										    <li>Detail Line 1</li>
+										    <li>Detail Line 2</li>
+										    <li>Detail Line 3</li>
+										</ul>
+									</div>									
 								</div>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label">Image</label>  
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<div class="input-group">
 									<label class="btn btn-default btn-file">
 									    Upload Image <input type="file"/>
@@ -74,7 +107,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-md-4 control-label"></label>  
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<button class="btn btn-primary" ng-click="register()">Add Product</button>
 								<button class="btn">Reset</button>
 							</div>
@@ -163,6 +196,74 @@
 				              <td>$ 750</td>
 				              <td>
 			                	<button type="button" class="btn btn-warning btn-sm disabled">Pending</button>
+				              </td>
+				            </tr>
+			          	</tbody>
+			        </table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-12">
+					<h3>Invite a Friend</h3>					
+					<hr style="width: 50%;" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h1 style="background-color: #F7F7F7; padding:20px;">
+						ZXU63hd<br/>
+						<button type="button" class="btn btn-primary btn-lg"><i class="fa fa-share-alt" aria-hidden="true"></i>&nbsp;&nbsp;Share via URL</button>
+						<button type="button" class="btn btn-info btn-lg"><i class="fa fa-facebook" aria-hidden="true"></i>&nbsp;&nbsp;Share on FB</button>
+						<button type="button" class="btn btn-success btn-lg"><i class="fa fa-whatsapp" aria-hidden="true"></i>&nbsp;&nbsp;Share on WhatsApp</button>
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-12">
+					<h3>My Downline (Referred friends)</h3>
+					<hr style="width: 50%;" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table-striped table">
+			            <tbody>
+				            <tr>
+				              <th><h4>Member Name</h4></th>
+				              <th><h4>Member E-Mail</h4></th>
+				              <th><h4>Join Date</h4></th>
+				            </tr>
+				            <tr>
+				              <td><a href="#">OE One</a></td>
+				              <td>
+					              <span>oe3@email.com</span>
+				              </td>
+				              <td>
+			                	 15/08/2017
+				              </td>
+				            </tr>
+				            <tr>
+				              <td><a href="#">OE Two</a></td>
+				              <td>
+					              <span>oe2@email.com</span>
+				              </td>
+				              <td>
+			                	 18/08/2017
+				              </td>
+				            </tr>
+				            <tr>
+				              <td><a href="#">OE Three</a></td>
+				              <td>
+					              <span>oe3@email.com</span>
+				              </td>
+				              <td>
+			                	 21/08/2017
 				              </td>
 				            </tr>
 			          	</tbody>

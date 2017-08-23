@@ -17,12 +17,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "templates/login.html"
     })
     .state('agentHome', {
-      url: "/agent/home",
+      url: "/oe/home",
       controller: 'AgentHomeCtrl',
       templateUrl: "templates/agenthome.html"
     })
     .state('agentRegister', {
-      url: "/agent/register",
+      url: "/oe/register",
       params: {role: 'Agent'},
       controller: 'AgentRegCtrl',
       templateUrl: "templates/opreg.html"
@@ -60,4 +60,26 @@ app.directive('headerTpl', function () {
     return {
         templateUrl: 'templates/header.html'
     }
+});
+
+app.directive('contenteditable', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ctrl) {
+            // view -> model
+            elm.bind('blur', function() {
+                scope.$apply(function() {
+                    ctrl.$setViewValue(elm.html());
+                });
+            });
+
+            // model -> view
+            ctrl.$render = function() {
+                elm.html(ctrl.$viewValue);
+            };
+
+            // load init value from DOM
+            ctrl.$setViewValue(elm.html());
+        }
+    };
 });

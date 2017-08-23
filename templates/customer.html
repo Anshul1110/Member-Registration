@@ -10,7 +10,7 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-						<input  name="first_name" placeholder="First Name" class="form-control" ng-model="user.fname"  type="text">
+						<input placeholder="First Name" class="form-control" ng-model="user.fname" type="text">
 					</div>
 				</div>
 			</div>
@@ -19,7 +19,7 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
-						<input name="last_name" placeholder="Last Name" class="form-control" ng-model="user.lname"  type="text">
+						<input placeholder="Last Name" class="form-control" ng-model="user.lname" type="text">
 					</div>
 				</div>
 			</div>
@@ -28,7 +28,7 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						<input  name="user_name" placeholder="Username" ng-model="user.uname" class="form-control"  type="text">
+						<input placeholder="Username" ng-model="user.uname" class="form-control" type="text">
 					</div>
 				</div>
 			</div>
@@ -37,7 +37,7 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-						<input name="user_password" placeholder="Password" ng-model="user.pass" class="form-control"  type="password">
+						<input placeholder="Password" ng-model="user.pass" class="form-control" type="password">
 					</div>
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></span>
-						<input name="confirm_password" placeholder="Confirm Password" class="form-control" ng-model="user.cpass"  type="password">
+						<input placeholder="Confirm Password" class="form-control" ng-model="user.cpass" type="password">
 					</div>
 				</div>
 			</div>
@@ -55,16 +55,16 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-						<input name="email" placeholder="E-Mail Address" class="form-control" ng-model="user.email"  type="text">
+						<input placeholder="E-Mail Address" class="form-control" ng-model="user.email" type="text">
 					</div>
 				</div>
 			</div>
-			<div class="form-group"> 
-				<label class="col-md-4 control-label">Department / Office</label>
-				<div class="col-md-4 selectContainer">
+			<div class="form-group">
+				<label class="col-md-4 control-label">NIC Number</label>  
+				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-list"></i></span>
-						<textarea placeholder="Enter Address Here.." rows="3" class="form-control" ng-model="user.dep"></textarea>
+						<span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+						<input placeholder="Enter Phone Number" class="form-control" ng-model="user.nic" type="text">
 					</div>
 				</div>
 			</div>
@@ -73,7 +73,16 @@
 				<div class="col-md-4 inputGroupContainer">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
-						<input name="contact_no" placeholder="Enter Phone Number" class="form-control" ng-model="user.numb" type="text">
+						<input placeholder="Enter Phone Number" class="form-control" ng-model="user.numb" type="text">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-md-4 control-label">Date of Birth</label>  
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+						<input class="form-control" ng-model="user.dob" type="date">
 					</div>
 				</div>
 			</div>
