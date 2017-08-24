@@ -18,8 +18,8 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('home');
 	}
 	$scope.user = {
-		u: '',
-		p: '',
+		u: 'Test',
+		p: 'Test',
 		r: $stateParams.role
 	}
 	$scope.login = function(){
@@ -32,7 +32,13 @@ app.controller('HomeCtrl', function($scope, $state){
         }).success(function(data, status, headers, config) {
             alert(data.message);                
             if(data.result){
-                console.log(data.user)                    
+                console.log(data)                    
+            	switch($scope.user.r){
+					case 'Online Entrepreneur' : $state.go('agentHome', {user:data.user}); break;
+					case 'Customer' : $state.go('customerHome', {user:data.user}); break;
+					case 'Merchant' : $state.go('merchantHome', {user:data.user}); break;	
+					case 'Admin' : var tuser = {fname:"Admin", role:"Admin"}; $state.go('adminHome', {user:tuser}); break;	
+				}
             }
         }).error(function(data, status, headers, config) {
             $state.go('home');
@@ -40,7 +46,7 @@ app.controller('HomeCtrl', function($scope, $state){
 	}
 	$scope.register = function(){
 		switch($scope.user.r){
-			case 'Agent' : $state.go('agentRegister'); break;
+			case 'Online Entrepreneur' : $state.go('agentRegister'); break;
 			case 'Customer' : $state.go('customerRegister'); break;
 			case 'Merchant' : $state.go('merchantRegister'); break;	
 		}	
@@ -50,6 +56,7 @@ app.controller('HomeCtrl', function($scope, $state){
 	if($stateParams.role==null){
 		$state.go('home');
 	}
+	console.log($stateParams);
 	$scope.user = {
 		credits:10,
 		fname:'Test',
@@ -65,28 +72,36 @@ app.controller('HomeCtrl', function($scope, $state){
 		numb: 'Test',
 		email: 'Test',
 		url: 'Test',
-		r: $stateParams.role
+		r: $stateParams.role,
+		c: $stateParams.refCode
 	}
 	$scope.register = function(){
+		$scope.showLoader = true;
 		$http({
             url: "backend/register.php",
             method: "POST",
             data: $scope.user,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status, headers, config) {
+			$scope.showLoader = false;
             console.log(data)                    
+            alert(data.message);
             if(data.result){
-            	alert("Thank you for registering, a verification E-Mail has been sent to your E-Mail ID. You can login after verifying successfully.");
                 $state.go('login', {role:$scope.user.r});
-            }else{
-                alert("There was an error in registering. Please try again!");
             }
         }).error(function(data, status, headers, config) {
             $state.go('home');
         });
 	}
 })
-.controller('AgentHomeCtrl', function($scope, $state, $stateParams, $http){
+.controller('AgentHomeCtrl', function($scope, $state, $stateParams, $http, $location){
+	if($stateParams.user==null){
+		$state.go('home');
+	}else{
+		$scope.user = $stateParams.user;
+		$scope.user.r = 'Online Entrepreneur';
+	}
+
 	$scope.reset = function(){
 		$scope.product = {
 			pcode:'Test',
@@ -98,13 +113,9 @@ app.controller('HomeCtrl', function($scope, $state){
 			psize:'Test',
 			pprice:'Test'
 		}
-		$scope.user = {
-			a_id:"C",
-			a_fname:"Anurag",
-			a_credits:8
-		}
 		$scope.showLoader = false;
 		$scope.getProducts();
+		$scope.getReferrals();
 	}
 
 	$scope.addProduct = function() {     
@@ -134,17 +145,46 @@ app.controller('HomeCtrl', function($scope, $state){
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status, headers, config) {
             console.log(data)
-            $scope.products = data.products;
+            $scope.user.products = data.products;
         }).error(function(data, status, headers, config) {
             $state.go('home');
         });
     }
 
     $scope.getReferrals = function(){
-
+    	$http({
+            url: "backend/getReferrals.php",
+            method: "POST",
+            data: $scope.user,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data, status, headers, config) {
+            console.log(data)
+            $scope.user.referrals = data.referrals;
+        }).error(function(data, status, headers, config) {
+            $state.go('home');
+        });
     }
 
-    $scope.reset();
+    $scope.shareLink = function(type){
+    	console.log(type);
+    	var link = $location.$$absUrl;
+    	link = link.split("/");
+    	delete link[link.length - 1];
+    	link = link.join("/") + "register/" + $scope.user['a_ref'];
+    	switch(type){
+    		case 'url': 
+    			prompt("Here is the link you can share:", link);
+    			break;
+    		case 'fb':
+    			window.open('https://www.facebook.com/sharer/sharer.php?u=' + link, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=400');
+    			break;
+    		case 'wa':
+    			window.open('https://web.whatsapp.com/send?text=Check out this link: ' + link, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=400');
+    			break;
+    	}
+    }
+
+	$scope.reset();
 
     function uploadProgress(evt) {
         $scope.$apply(function(){
@@ -192,9 +232,11 @@ app.controller('HomeCtrl', function($scope, $state){
 		nic:'102933843348',
 		dob: new Date(),
 		numb:'Test',
-		r: $stateParams.role
+		r: $stateParams.role,
+		c: $stateParams.refCode
 	}
 	$scope.register = function(){
+		$scope.showLoader = true;
 		$scope.user.sqlDob = $scope.user.dob.toMysqlFormat(0,0,0);
 		$http({
             url: "backend/register.php",
@@ -202,26 +244,58 @@ app.controller('HomeCtrl', function($scope, $state){
             data: $scope.user,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status, headers, config) {
+			$scope.showLoader = false;
             console.log(data)                    
+            alert(data.message);
             if(data.result){
-            	alert("Thank you for registering, a verification E-Mail has been sent to your E-Mail ID. You can login after registering successfully.");
                 $state.go('login', {role:$scope.user.r});
-            }else{
-                alert("There was an error in registering. Please try again!");
             }
         }).error(function(data, status, headers, config) {
             $state.go('home');
         });
 	}
 })
-.controller('CustHomeCtrl', function($scope, $state, $stateParams){
-	/*$scope.user = {
-		fields:''
-
+.controller('CustHomeCtrl', function($scope, $state, $stateParams, $location, $http){
+	if($stateParams.user==null){
+		$state.go('home');
+	}else{
+		$scope.user = $stateParams.user;
+		$scope.user.r = 'Customer';		
 	}
-	$scope.register = function(){
-		console.log($scope.user)
-	}*/
+	$scope.getReferrals = function(){
+    	$http({
+            url: "backend/getReferrals.php",
+            method: "POST",
+            data: $scope.user,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data, status, headers, config) {
+            console.log(data)
+            $scope.user.referrals = data.referrals;
+        }).error(function(data, status, headers, config) {
+            $state.go('home');
+        });
+    }
+
+    $scope.shareLink = function(type){
+    	console.log(type);
+    	var link = $location.$$absUrl;
+    	link = link.split("/");
+    	delete link[link.length - 1];
+    	link = link.join("/") + "register/" + $scope.user['c_ref'];
+    	switch(type){
+    		case 'url': 
+    			prompt("Here is the link you can share:", link);
+    			break;
+    		case 'fb':
+    			window.open('https://www.facebook.com/sharer/sharer.php?u=' + link, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=400');
+    			break;
+    		case 'wa':
+    			window.open('https://web.whatsapp.com/send?text=Check out this link: ' + link, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=400');
+    			break;
+    	}
+    }
+
+    $scope.getReferrals();
 })
 .controller('MerchRegCtrl', function($scope, $state, $stateParams, $http){
 	if($stateParams.role==null){
@@ -241,42 +315,130 @@ app.controller('HomeCtrl', function($scope, $state){
 		numb: 'Test',
 		email: 'Test',
 		url: 'Test',
-		r: $stateParams.role
+		r: $stateParams.role,
+		c: $stateParams.refCode
 	}
 
 	$scope.register = function(){
+		$scope.showLoader = true;
 		$http({
             url: "backend/register.php",
             method: "POST",
             data: $scope.user,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).success(function(data, status, headers, config) {
+			$scope.showLoader = false;
             console.log(data)                    
+            alert(data.message);
             if(data.result){
-            	alert("Thank you for registering, a verification E-Mail has been sent to your E-Mail ID. You can login after registering successfully.");
                 $state.go('login', {role:$scope.user.r});
-            }else{
-                alert("There was an error in registering. Please try again!");
             }
         }).error(function(data, status, headers, config) {
             $state.go('home');
         });
 	}
 })
-.controller('MerchHomeCtrl', function($scope, $state, $stateParams){
-	/*$scope.user = {
-		field1:'',
-		
+.controller('MerchHomeCtrl', function($scope, $state, $stateParams, $location, $http){
+	if($stateParams.user==null){
+		$state.go('home');
+	}else{
+		$scope.user = $stateParams.user;
+		$scope.user.r = 'Merchant';
 	}
-	$scope.register = function(){
-		console.log($scope.user)
-	}*/
+	$scope.getReferrals = function(){
+    	$http({
+            url: "backend/getReferrals.php",
+            method: "POST",
+            data: $scope.user,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data, status, headers, config) {
+            console.log(data)
+            $scope.user.referrals = data.referrals;
+        }).error(function(data, status, headers, config) {
+            $state.go('home');
+        });
+    }
+
+    $scope.shareLink = function(type){
+    	console.log(type);
+    	var link = $location.$$absUrl;
+    	link = link.split("/");
+    	delete link[link.length - 1];
+    	link = link.join("/") + "register/" + $scope.user['m_ref'];
+    	switch(type){
+    		case 'url': 
+    			prompt("Here is the link you can share:", link);
+    			break;
+    		case 'fb':
+    			window.open('https://www.facebook.com/sharer/sharer.php?u=' + link, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=400');
+    			break;
+    		case 'wa':
+    			window.open('https://web.whatsapp.com/send?text=Check out this link: ' + link, '_blank', 'toolbar=yes,scrollbars=yes,resizable=yes,top=100,left=500,width=700,height=400');
+    			break;
+    	}
+    }
+
+    $scope.getReferrals();
 })
-.controller('AdminHomeCtrl', function($scope, $state, $stateParams){
-	$scope.user = {
-		field1:''
+.controller('AdminHomeCtrl', function($scope, $state, $stateParams, $http){
+	$scope.getData = function(){
+		$http({
+	        url: "backend/admindata.php",
+	        method: "POST",
+	        data: $scope.user,
+	        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	    }).success(function(data, status, headers, config) {
+	        console.log(data)
+	        $scope.user.agents = data.agents;
+	        $scope.user.products = data.products;
+	    }).error(function(data, status, headers, config) {
+	        $state.go('home');
+	    });
 	}
-	$scope.register = function(){
-		console.log($scope.user)
+
+	$scope.updateCredits = function(action, agent){
+		console.log(action, agent);
+		var obj = {
+			action: action,
+			agent: agent
+		}
+		$http({
+	        url: "backend/updateCredit.php",
+	        method: "POST",
+	        data: obj,
+	        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	    }).success(function(data, status, headers, config) {
+	        console.log(data)
+	        alert(data.message);
+	        $scope.getData();
+	    }).error(function(data, status, headers, config) {
+	        $state.go('home');
+	    });
+	}
+
+	$scope.updateProduct = function(product){
+		console.log(product);
+		$http({
+	        url: "backend/approveProduct.php",
+	        method: "POST",
+	        data: product,
+	        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+	    }).success(function(data, status, headers, config) {
+	        console.log(data)
+	        alert(data.message)
+	        if(data.result){
+	        	$scope.getData();
+	    	}
+	    }).error(function(data, status, headers, config) {
+	        $state.go('home');
+	    });
+	}
+
+	if($stateParams.user==null){
+		$state.go('home');
+	}else{
+		$scope.user = $stateParams.user;
+		$scope.user.r = 'Admin';
+		$scope.getData();
 	}
 });

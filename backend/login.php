@@ -47,22 +47,30 @@
                 $table = 'merchant';
                 $id_field = 'm_id';
                 break;
+            case "Admin":
+                $message["message"] = "Login Successful.";
+                $message["result"] = true;
+                echo json_encode($message);
+                break;
         }
-        $query  =  "SELECT *
-                    FROM $table
-                    WHERE $id_field = '$db_id'";
-        $result = $conn->query($query);  
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $arr[] = $row;
+        if($user['r']!='Admin'){            
+            $query  =  "SELECT *
+                        FROM $table
+                        WHERE $id_field = '$db_id'";
+            $result = $conn->query($query);  
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $arr[] = $row;
+                }
             }
+            $message["message"] = "Login Successful.";
+            $message["result"] = true;
+            $message["user"] = $arr[0];
+            echo json_encode($message);
         }
-        $message["message"] = "Login Successful.";
-        $message["result"] = true;
-        $message["user"] = $arr;
     }else{
         $message["message"] = "Wrong User ID/Password.";
+        echo json_encode($message);
     }
-    echo json_encode($message);
     $conn->close();
 ?>

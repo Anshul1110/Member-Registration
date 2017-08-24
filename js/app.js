@@ -18,39 +18,43 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('agentHome', {
       url: "/oe/home",
+      params:{user:null},
       controller: 'AgentHomeCtrl',
       templateUrl: "templates/agenthome.html"
     })
     .state('agentRegister', {
-      url: "/oe/register",
-      params: {role: 'Agent'},
+      url: "/oe/register/:refCode",
+      params: {role: 'Online Entrepreneur'},
       controller: 'AgentRegCtrl',
-      templateUrl: "templates/opreg.html"
+      templateUrl: "templates/agent.html"
     })
     .state('customerHome', {
       url: "/customer/home",
+      params:{user:null},
       controller: 'CustHomeCtrl',
       templateUrl: "templates/custhome.html"
     })
     .state('customerRegister', {
-      url: "/customer/register",
+      url: "/customer/register/:refCode",
       params: {role: 'Customer'},
       controller: 'CustRegCtrl',
       templateUrl: "templates/customer.html"
     })
     .state('merchantHome', {
       url: "/merchant/home",
+      params:{user:null},
       controller: 'MerchHomeCtrl',
       templateUrl: "templates/merchhome.html"
     })
     .state('merchantRegister', {
-      url: "/merchant/register",
+      url: "/merchant/register/:refCode",
       params: {role: 'Merchant'},
       controller: 'MerchRegCtrl',
       templateUrl: "templates/merchant.html"
     })
     .state('adminHome', {
       url: "/admin/home",
+      params: {user:null},
       controller: 'AdminHomeCtrl',
       templateUrl: "templates/adminhome.html"
     });

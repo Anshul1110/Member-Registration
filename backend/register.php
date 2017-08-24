@@ -15,19 +15,33 @@
 
     $message = array();
     $message["result"] = false;
-    $message["data"] = "anshul";
+    
+    checkIfUserExists($user, $conn);
 
-    switch ($user['r']) {
-        case "Customer":
-            customerRegister($user, $conn);
-            break;
-        case "Agent":
-            agentRegister($user, $conn);
-            break;
-        case "Merchant":
-            merchantRegister($user, $conn);
-            break;
+    function checkIfUserExists($user, $conn){
+        $uname = $user['uname'];
+        $query  =  "SELECT l_id
+                    FROM login
+                    WHERE l_user = '$uname'";
+        $result = $conn->query($query);  
+        if ($result->num_rows > 0) {
+            $message['message'] = "Please use a different username.";
+            echo json_encode($message);
+        }else{
+            switch ($user['r']) {
+                case "Customer":
+                    customerRegister($user, $conn);
+                    break;
+                case "Online Entrepreneur":
+                    agentRegister($user, $conn);
+                    break;
+                case "Merchant":
+                    merchantRegister($user, $conn);
+                    break;
+            }
+        }
     }
+
 
     function merchantRegister($user, $conn){
         $m_id = 'M'.generateRand();
@@ -83,7 +97,7 @@
 
     function agentRegister($user, $conn){
         $a_id = 'A'.generateRand();
-        $user['id'] = $m_id;
+        $user['id'] = $a_id;
         $a_fname = $user['fname'];
         $a_lname = $user['lname'];
         $a_uname = $user['uname'];
@@ -116,7 +130,7 @@
                                 )
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
  
-        $stmt->bind_param("ssssssssssss", 
+        $stmt->bind_param("sssssssssssss", 
                             $a_id, 
                             $a_fname, 
                             $a_lname,
@@ -174,6 +188,55 @@
     }
     
     function addLoginDetails($user, $conn){
+        //Check if referred
+        $refCode = $user["c"];
+        if($refCode!=""){
+            $arr = array();
+            switch ($user['r']) {
+                case "Online Entrepreneur":
+                    $table = 'agent';
+                    $id_field = 'a_id';
+                    $ref_field = 'a_ref';
+                    break;
+                case "Customer":
+                    $table = 'customer';
+                    $id_field = 'c_id';
+                    $ref_field = 'c_ref';
+                    break;
+                case "Merchant":
+                    $table = 'merchant';
+                    $id_field = 'm_id';
+                    $ref_field = 'm_ref';
+                    break;
+            }
+            $query  =  "SELECT *
+                        FROM $table
+                        WHERE $ref_field = '$refCode'";
+            $result = $conn->query($query);  
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $arr[] = $row;
+                }
+                $r_id = 'R'.generateRand();
+                $parent_id = $arr[0][$id_field];
+                $child_id = $user['id'];
+                $stmt = $conn->prepare("INSERT INTO referral ( 
+                                            r_id,
+                                            r_code, 
+                                            r_parent_id, 
+                                            r_child_id
+                                        )
+                                        VALUES (?, ?, ?, ?)"); 
+                $stmt->bind_param("ssss", 
+                                    $r_id, 
+                                    $refCode,
+                                    $parent_id,
+                                    $child_id
+                                    );
+                $stmt->execute();
+            }
+        }
+
         if( $user['pass'] == $user['cpass']){
             $l_id = $user['id'];
             $l_role = $user['r'];
@@ -200,10 +263,11 @@
                                 $l_status
                                 );
             if($stmt->execute()){
-                $verifurl = "http://".$_SERVER['SERVER_NAME'].":5656/Member-Registration"."/backend/verify.php?xcj=".$id_md5."&tc=".$l_token;
+                $verifurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration"."/backend/verify.php?xcj=".$id_md5."&tc=".$l_token;
                 $message["result"] = true;
                 $message["user"] = $user;
                 $message["url"] = $verifurl;
+                $message["message"] = "Thank you for registering, a verification E-Mail has been sent to your E-Mail ID. You can login after verifying successfully.";
                 sendVerificationEmail($message, $user);
             }
         }else{
@@ -211,7 +275,7 @@
             echo json_encode($message);
         }
     }
-    
+
     function sendVerificationEmail($message, $user){
         $mail = new PHPMailer;
         $mail->IsSMTP();                                      // Set mailer to use SMTP
@@ -225,7 +289,7 @@
         $mail->IsHTML(true);  
         $mail->setFrom('anurag@envisagecyberart.in', 'Member Registration Admin');        
         $mail->addAddress($user["email"], $user["fname"]);     // Add a recipient
-        $mail->Subject = 'Member Verification E-Mail';
+        $mail->Subject = 'Member Verification E-Mail | '.$user['r'].' '.$user['fname'].' '.$user['lname'];
         $body = '<div style="font-size:1.5em;">';
         $body.=     '<h3>Hello, '.$user["fname"]." ".$user["lname"].'!</h3>';
         $body.=     '<p>Thank you for registering with us as a '.$user['r'].'. Click on the below button to complete the verification process.</p><br/>';

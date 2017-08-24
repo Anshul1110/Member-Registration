@@ -1,0 +1,112 @@
+<div class="container">
+	<h1 class="well">Online Entrepreneur Registration Form</h1>
+	<div class="col-md-12 well">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6 form-group">
+						<label>First Name</label>
+						<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<input  name="first_name" ng-model="user.fname" placeholder="First Name" class="form-control"  type="text">
+				</div>
+					</div>
+					<div class="col-md-6 form-group">
+						<label>Last Name</label>
+						<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<input name="last_name" ng-model="user.lname" placeholder="Last Name" class="form-control"  type="text">
+				</div>
+					</div>
+				</div>
+				<div class="form-group">
+				<label class="control-label">Username</label>  
+				<div class="inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<input  name="user_name" placeholder="Username" ng-model="user.uname" class="form-control"  type="text">
+					</div>
+				</div>
+			</div>
+			<div class="form-group ">
+				<label class="control-label">Password</label> 
+				<div class="inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<input name="user_password" placeholder="Password" ng-model="user.pass" class="form-control"  type="password">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label" >Confirm Password</label> 
+				<div class="inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<input name="confirm_password" placeholder="Confirm Password" class="form-control" ng-model="user.cpass" type="password">
+					</div>
+				</div>
+			</div>					
+				<div class="form-group">
+					<label>Address</label>
+					<textarea placeholder="Enter Address Here.." rows="3" class="form-control" ng-model="user.add"></textarea>
+				</div>	
+				<div class="row">
+					<div class="col-md-4 form-group">
+						<label>City</label>
+						<input type="text" placeholder="Enter City Name Here.." class="form-control" ng-model="user.city">
+					</div>	
+					<div class="col-md-4 form-group">
+						<label>State</label>
+						<input type="text" placeholder="Enter State Name Here.." class="form-control" ng-model="user.state">
+					</div>	
+					<div class="col-md-4 form-group">
+						<label>Zip</label>
+						<input type="text" placeholder="Enter Zip Code Here.." class="form-control" ng-model="user.zip">
+					</div>		
+				</div>
+				<div class="row">
+					
+					<div class="col-md-12 form-group">
+						<label>Company</label>
+						<input type="text" placeholder="Enter Company Name Here.." class="form-control" ng-model="user.comp">
+					</div>	
+				</div>						
+				<div class="form-group">
+					<label>Phone Number</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-earphone"></i></span>
+						<input name="contact_no" placeholder="(639)" class="form-control" type="text" ng-model="user.numb">
+					</div>
+				</div>		
+				<div class="form-group">
+					<label>Email Address</label>
+					<div class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+						<input name="email" placeholder="E-Mail Address" class="form-control"  type="text" ng-model="user.email">
+					</div>
+				</div>	
+				<div class="form-group">
+					<label>Website</label>
+					<div class="input-group">
+					  <span class="input-group-addon" id="basic-addon3">https://example.com/users/</span>
+					  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" ng-model="user.url">
+					</div>
+				</div>	
+				<div class="form-group">
+					<label>Referral Code (Optional)</label>
+					<div class="input-group">
+					  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" ng-model="user.c">
+					</div>
+				</div>
+				<button type="button" class="btn btn-lg btn-info" ng-click="register()">Submit</button>
+				<button type="button" class="btn btn-lg btn-default" >Reset</button>					
+			</div>
+		</div>
+	</div>
+</div>
+<div ng-show="showLoader" class="loader">
+    <div class="loadertext">
+        Registering..<br/>
+        {{progress}} %
+    </div>
+</div>
