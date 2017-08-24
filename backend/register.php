@@ -5,6 +5,7 @@
 
     include('db_connect.php');   
     include('random.php');   
+    include('MAIL/PHPMailerAutoload.php');
 
     $user = json_decode(file_get_contents('php://input'), true);
     // Check connection
@@ -44,6 +45,7 @@
         $m_numb = $user['numb'];
         $m_email = $user['email'];
         $m_url = $user['url'];
+        $m_ref = generateRefcode("M");
         $stmt = $conn->prepare("INSERT INTO merchant ( 
                                     m_id, 
                                     m_fname, 
@@ -55,11 +57,12 @@
                                     m_company,
                                     m_number,
                                     m_email,
-                                    m_url
+                                    m_url,
+                                    m_ref
                                 )
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
  
-        $stmt->bind_param("sssssssssss", 
+        $stmt->bind_param("ssssssssssss", 
                             $m_id, 
                             $m_fname, 
                             $m_lname,
@@ -70,7 +73,8 @@
                             $m_comp,
                             $m_numb,
                             $m_email,
-                            $m_url);
+                            $m_url,
+                            $m_ref);
 
         if($stmt->execute()){
             addLoginDetails($user, $conn);
@@ -94,6 +98,7 @@
         $a_email = $user['email'];
         $a_url = $user['url'];
         $a_credits = $user['credits'];
+        $a_ref = generateRefcode("A");
         $stmt = $conn->prepare("INSERT INTO agent ( 
                                     a_id, 
                                     a_fname, 
@@ -106,9 +111,10 @@
                                     a_number,
                                     a_email,
                                     a_url,
-                                    a_credits
+                                    a_credits,
+                                    a_ref
                                 )
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"); 
  
         $stmt->bind_param("ssssssssssss", 
                             $a_id, 
@@ -122,7 +128,8 @@
                             $a_numb,
                             $a_email,
                             $a_url,
-                            $a_credits
+                            $a_credits,
+                            $a_ref
                             );
 
         if($stmt->execute()){
@@ -139,6 +146,7 @@
         $c_nic = $user['nic'];
         $c_dob = $user['sqlDob'];
         $c_numb = $user['numb'];
+        $c_ref = generateRefcode("C");
         $stmt = $conn->prepare("INSERT INTO customer ( 
                                     c_id, 
                                     c_fname, 
@@ -146,17 +154,19 @@
                                     c_email,
                                     c_nic,
                                     c_number,
-                                    c_dob
+                                    c_dob,
+                                    c_ref
                                 )
-                                VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssss", 
+                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssssss", 
                             $c_id, 
                             $c_fname, 
                             $c_lname,
                             $c_email,
                             $c_nic,
                             $c_numb,
-                            $c_dob
+                            $c_dob,
+                            $c_ref
                             );
         if($stmt->execute()){
             addLoginDetails($user, $conn);
@@ -164,33 +174,71 @@
     }
     
     function addLoginDetails($user, $conn){
-        $l_id = $user['id'];
-        $l_role = $user['r'];
-        $l_user = $user['uname'];
         if( $user['pass'] == $user['cpass']){
+            $l_id = $user['id'];
+            $l_role = $user['r'];
+            $l_user = $user['uname'];
+            $l_status = "Pending";
+            $id_md5 = md5($user['id']);
+            $l_token = md5($user['r']).$id_md5;
             $l_pass = md5($user['pass']);
             $stmt = $conn->prepare("INSERT INTO login ( 
                                         l_id,
                                         l_role, 
                                         l_user, 
-                                        l_pass
+                                        l_pass,
+                                        l_token,
+                                        l_status
                                     )
-                                    VALUES (?, ?, ?, ?)"); 
-            $stmt->bind_param("ssss", 
+                                    VALUES (?, ?, ?, ?, ?, ?)"); 
+            $stmt->bind_param("ssssss", 
                                 $l_id, 
                                 $l_role, 
                                 $l_user,
-                                $l_pass
+                                $l_pass,
+                                $l_token,
+                                $l_status
                                 );
             if($stmt->execute()){
+                $verifurl = "http://".$_SERVER['SERVER_NAME'].":5656/Member-Registration"."/backend/verify.php?xcj=".$id_md5."&tc=".$l_token;
                 $message["result"] = true;
                 $message["user"] = $user;
-                echo json_encode($message);
+                $message["url"] = $verifurl;
+                sendVerificationEmail($message, $user);
             }
         }else{
             $message['result'] = false;
             echo json_encode($message);
         }
-        $conn->close();
     }
+    
+    function sendVerificationEmail($message, $user){
+        $mail = new PHPMailer;
+        $mail->IsSMTP();                                      // Set mailer to use SMTP
+        $mail->Host = 'sg2plcpnl0102.prod.sin2.secureserver.net';  // Specify main and backup SMTP servers
+        $mail->Port = 465;                                    // TCP port to connect to
+        $mail->SMTPDebug  = 0;           
+        $mail->SMTPAuth = true;                               // Enable SMTP authentication
+        $mail->SMTPSecure = "ssl";
+        $mail->Username = 'anurag@envisagecyberart.in';                 // SMTP username
+        $mail->Password = 'sbb-4645752';                           // SMTP password
+        $mail->IsHTML(true);  
+        $mail->setFrom('anurag@envisagecyberart.in', 'Member Registration Admin');        
+        $mail->addAddress($user["email"], $user["fname"]);     // Add a recipient
+        $mail->Subject = 'Member Verification E-Mail';
+        $body = '<div style="font-size:1.5em;">';
+        $body.=     '<h3>Hello, '.$user["fname"]." ".$user["lname"].'!</h3>';
+        $body.=     '<p>Thank you for registering with us as a '.$user['r'].'. Click on the below button to complete the verification process.</p><br/>';
+        $body.=     '<a style="cursor:pointer;" href="'.$message["url"].'"><button style="font-size:1em; padding:0.5em;">Verify Account</button></>';
+        $body.= '</div>';
+        $mail->Body = $body;
+        if(!$mail->send()) {
+            $message['mailsent'] = false;
+        } else {
+            $message['mailsent'] = true;
+        }
+        echo json_encode($message);
+    }
+
+    $conn->close();
 ?>

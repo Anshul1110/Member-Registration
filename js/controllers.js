@@ -13,7 +13,7 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('login', {role: role})
 	}
 })
-.controller('LoginCtrl', function($scope, $state, $stateParams){
+.controller('LoginCtrl', function($scope, $state, $stateParams, $http){
 	if($stateParams.role==null){
 		$state.go('home');
 	}
@@ -24,16 +24,23 @@ app.controller('HomeCtrl', function($scope, $state){
 	}
 	$scope.login = function(){
 		console.log($scope.user)
-		switch($scope.user.r){
-			case 'Online Entrepreneur' : $state.go('agentLogin'); break;
-			case 'Admin' : $state.go('adminLogin'); break;
-			case 'Customer' : $state.go('customerLogin'); break;
-			case 'Merchant' : $state.go('merchantLogin'); break;	
-		}	
+		$http({
+            url: "backend/login.php",
+            method: "POST",
+            data: $scope.user,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data, status, headers, config) {
+            alert(data.message);                
+            if(data.result){
+                console.log(data.user)                    
+            }
+        }).error(function(data, status, headers, config) {
+            $state.go('home');
+        });
 	}
 	$scope.register = function(){
 		switch($scope.user.r){
-			case 'Online Entrepreneur' : $state.go('agentRegister'); break;
+			case 'Agent' : $state.go('agentRegister'); break;
 			case 'Customer' : $state.go('customerRegister'); break;
 			case 'Merchant' : $state.go('merchantRegister'); break;	
 		}	
@@ -181,7 +188,7 @@ app.controller('HomeCtrl', function($scope, $state){
 		uname:'Test',
 		pass:'Test',
 		cpass:'Test',
-		email:'Test',
+		email:'anurag.131092@gmail.com',
 		nic:'102933843348',
 		dob: new Date(),
 		numb:'Test',
