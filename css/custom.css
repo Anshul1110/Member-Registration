@@ -3,7 +3,25 @@
  	font-family:'class';
  	src:url("../fonts/class.ttf") format("truetype");
 }
-
+.loader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: white;
+    height: 1080px;
+    background: rgba(0, 0, 0, 0.84);
+    text-align: center;
+    display: table;
+    z-index: 2;
+}
+.loadertext{
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 36px;
+    color: white;
+    font-weight: bold;
+}
 body{
 	font-family: 'class' !important;
 }
@@ -19,7 +37,8 @@ td{
 	text-align: left;
 }
 .cartImage{
-	height: 50px;
+    height: 50px;
+	width: 50px;
 }
 .table span{
 	font-weight: bold;
