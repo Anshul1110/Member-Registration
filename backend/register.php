@@ -263,7 +263,13 @@
                                 $l_status
                                 );
             if($stmt->execute()){
-                $verifurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration"."/backend/verify.php?xcj=".$id_md5."&tc=".$l_token;
+                if($_SERVER['SERVER_NAME'] != "localhost"){
+                    //Currently Hosted URL
+                    $verifurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration"."/backend/verify.php?xcj=".$id_md5."&tc=".$l_token;
+                }else{
+                    //Local URL
+                    $verifurl = "http://".$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/Member-Registration"."/backend/verify.php?xcj=".$id_md5."&tc=".$l_token;
+                }
                 $message["result"] = true;
                 $message["user"] = $user;
                 $message["url"] = $verifurl;

@@ -18,8 +18,8 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('home');
 	}
 	$scope.user = {
-		u: 'Test',
-		p: 'Test',
+		u: '',
+		p: '',
 		r: $stateParams.role
 	}
 	$scope.login = function(){
@@ -59,19 +59,19 @@ app.controller('HomeCtrl', function($scope, $state){
 	console.log($stateParams);
 	$scope.user = {
 		credits:10,
-		fname:'Test',
-		lname: 'Test',
-		uname:'Test',
-		pass:'Test',
-		cpass:'Test',
-		add: 'Test',
-		city: 'Test',
-		state: 'Test',
-		zip: 'Test',
-		comp: 'Test',
-		numb: 'Test',
-		email: 'Test',
-		url: 'Test',
+		fname:'',
+		lname: '',
+		uname:'',
+		pass:'',
+		cpass:'',
+		add: '',
+		city: '',
+		state: '',
+		zip: '',
+		comp: '',
+		numb: '',
+		email: '',
+		url: '',
 		r: $stateParams.role,
 		c: $stateParams.refCode
 	}
@@ -223,15 +223,15 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('home');
 	}
 	$scope.user = {
-		fname:'Test',
-		lname: 'Test',
-		uname:'Test',
-		pass:'Test',
-		cpass:'Test',
-		email:'anurag.131092@gmail.com',
-		nic:'102933843348',
+		fname:'',
+		lname: '',
+		uname:'',
+		pass:'',
+		cpass:'',
+		email:'',
+		nic:'',
 		dob: new Date(),
-		numb:'Test',
+		numb:'',
 		r: $stateParams.role,
 		c: $stateParams.refCode
 	}
@@ -302,19 +302,19 @@ app.controller('HomeCtrl', function($scope, $state){
 		$state.go('home');
 	}
 	$scope.user = {
-		fname:'Test',
-		lname: 'Test',
-		uname:'Test',
-		pass:'Test',
-		cpass:'Test',
-		add: 'Test',
-		city: 'Test',
-		state: 'Test',
-		zip: 'Test',
-		comp: 'Test',
-		numb: 'Test',
-		email: 'Test',
-		url: 'Test',
+		fname:'',
+		lname: '',
+		uname:'',
+		pass:'',
+		cpass:'',
+		add: '',
+		city: '',
+		state: '',
+		zip: '',
+		comp: '',
+		numb: '',
+		email: '',
+		url: '',
 		r: $stateParams.role,
 		c: $stateParams.refCode
 	}

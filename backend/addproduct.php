@@ -122,7 +122,13 @@
                     $fileurl = "../".$url.$file["name"];
                     if(move_uploaded_file($file["tmp_name"], $fileurl)){                    
                         $message["uploadedFile"] = $file;    
-                        $inserturl = "http://" .$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration/".$url.$file["name"];
+                        if($_SERVER['SERVER_NAME'] != "localhost"){
+                            //Currently Hosted URL
+                            $inserturl = "http://" .$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration/".$url.$file["name"];
+                        }else{
+                            //Local URL
+                            $inserturl = "http://" .$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/Member-Registration/".$url.$file["name"];
+                        }
                         $stmt = $conn->prepare("UPDATE product SET
                                                 p_img = ?
                                                 WHERE p_id = ?");

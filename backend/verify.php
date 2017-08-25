@@ -43,8 +43,13 @@
     }else{
         $status_msg = "Please register first. If you have already registered, please contact admin.";
     }
-
-    $hostname = "http://" .$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration"; 
+    if($_SERVER['SERVER_NAME'] != "localhost"){
+        //Currently Hosted URL
+        $hostname = "http://" .$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/projects/Member-Registration"; 
+    }else{
+        //Local URL
+        $hostname = "http://" .$_SERVER['SERVER_NAME'].":".$_SERVER['SERVER_PORT']."/Member-Registration"; 
+    }
     /*var_dump($arr);
     var_dump($query);
     var_dump($v_det);*/
